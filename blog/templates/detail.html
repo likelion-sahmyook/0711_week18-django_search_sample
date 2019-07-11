@@ -1,48 +1,85 @@
-{% comment %} {% extends 'base.html' %} {% endcomment %}
+{% extends 'base.html' %} 
+
 {% block content %}
 <div class="container">
     <h1>Detail Post</h1>
-    <p>이 글을 '좋아요'하는 사람</p>
-    {% for user in post.user.all %}
-    {{user}}
-    {% endfor %}
     <p>
         <h2>제목 : {{post.title}}</h2>
-        <p>작성자 : {{post.writer}}</p>
-        <p>발행일 : {{post.pub_date}}</p>
+        <p>작성자 : {{post.writer}} | 발행일 : {{post.pub_date}}</p>
+        <hr>
         <p>
             본문
             <br>
             {{post.body}}
         </p>
     </p>
+    
+<!-- ajax -->
+    <!-- <form> -->
     <form action="{% url 'like' post.id%}" method="get">
         <input type="hidden" name = 'like' value="{{user}}">
-        <button type="submit">좋아요</button>
-    </form>
-    
-    <br>
-    <a href="{% url 'home' %}"> home </a>
-    <br>
-    
 
-    <a href="{% url 'edit' post.id %}">수정하기</a>
-    <a href="{% url 'delete' post.id %}">삭제하기</a>
+                       
+        {% if user.is_authenticated %}
+            <!-- ajax -->
+            <!-- <button type="button" id="like" >좋아요</button> -->
+            <button type="submit" id="like" >좋아요(<span id="like_count">{{post.user.count}}</span>)</button>
+        {% else %}
+            <button type="button" onclick="likeclick();">좋아요(<span id="like_count">{{post.user.count}}</span>)</button>
+        {% endif %}  
+        <p>이 글을 좋아 하는 사람 : </p>
+            <sapn id="like_user">
+            {% for user in post.user.all %}
+            {{user}}
+            {% endfor %}
+            </sapn>
+    </form>
+
+    <script>
+        function likeclick() {
+            alert('좋아요는 로그인 이후 가능합니다.');
+            window.location.href = '/accounts/login/';
+        }
+    </script>
+    <br>
+    <a href="{% url 'edit' post.id %}">수정하기</a> | 
+    <a href="{% url 'delete' post.id %}">삭제하기</a> | 
+    <a href="{% url 'home' %}"> 뒤로 </a>
     <hr>
     <h2>comments</h2>
     {% for comment in comments %}
-    {{comment.writer}}
-    <br><hr>
-    {{comment.content}}
+    작성자 : {{comment.writer}}
+    <br>
+    내용 : {{comment.content}}
     <hr>
     {% endfor%}
     <form action="{% url 'new_comment' post.id %}" method="POST">
         {% csrf_token %}
-        작성자 : <input name="writer" type="text">
-        <br>
+        <input name="writer" type="hidden" value="{{user}}">
         내용 : <textarea name="content" id="" cols="20" rows="10"></textarea>
         <input type="submit">
     </form>
 </div>
 
+<!-- <script type="text/javascript">
+  $("#like").on("click", function(){
+    // var pk = $(this).attr('name')
+    $.ajax({ // .like 버튼을 클릭하면 <새로고침> 없이 ajax로 서버와 통신하겠다.
+      type: "GET", // 데이터를 전송하는 방법을 지정
+      url: "{% url 'like' post.id%}", // 통신할 url을 지정
+      success: function(data){ // 통신 성공시 - 동적으로 좋아요 갯수 변경, 유저 목록 변경
+        console.log($(data).find('#like_user').text());
+        console.log($(data).find('#like_count').text());
+
+        $("#like_count").text($(data).find('#like_count').text());
+        $("#like_user").text($(data).find('#like_user').text());
+      },
+      error: function(request, status, error){ // 통신 실패시 - 로그인 페이지 리다이렉트
+        alert("ajax error")
+      },
+    });
+  })
+</script> -->
+
 {% endblock %}
+

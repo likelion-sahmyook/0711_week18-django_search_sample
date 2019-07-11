@@ -1,3 +1,7 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+
 <h1>새 글을 작성해주세요</h1>
 
 <form action="{%url 'create' %}" method="POST">
@@ -13,3 +17,5 @@
     <br>
     <button type='submit'>작성하기</button>
 </form>
+
+{% endblock %}
