@@ -2,30 +2,27 @@
 
 {% block content %}
 <div class="container">
-    <h1>Detail Post</h1>
+    <h1>{{post.title}}</h1>
+    <p>작성자 : {{post.writer}} | 발행일 : {{post.pub_date}}</p>
+    <hr>
     <p>
-        <h2>제목 : {{post.title}}</h2>
-        <p>작성자 : {{post.writer}} | 발행일 : {{post.pub_date}}</p>
-        <hr>
-        <p>
-            본문
-            <br>
-            {{post.body}}
-        </p>
+        본문
+        <br>
+        {{post.body}}
     </p>
     
 <!-- ajax -->
-    <form>
+    <form class="like_form">
     <!-- <form action="{% url 'like' post.id%}" method="get"> -->
         <input type="hidden" name = 'like' value="{{user}}">
 
                        
         {% if user.is_authenticated %}
             <!-- ajax -->
-            <button type="button" id="like" >좋아요(<span id="like_count">{{post.user.count}}</span>)</button>
+            <button type="button" id="like" class="btn btn-primary">좋아요(<span id="like_count">{{post.user.count}}</span>)</button>
             <!-- <button type="submit" id="like" >좋아요(<span id="like_count">{{post.user.count}}</span>)</button> -->
         {% else %}
-            <button type="button" onclick="likeclick();">좋아요(<span id="like_count">{{post.user.count}}</span>)</button>
+            <button type="button" class="btn btn-primary" onclick="likeclick();">좋아요(<span id="like_count">{{post.user.count}}</span>)</button>
         {% endif %}  
         <p>이 글을 좋아 하는 사람 : </p>
             <sapn id="like_user">
@@ -52,7 +49,7 @@
 
     <a href="{% url 'home' %}"> 뒤로 </a>
     <hr>
-    <h2>comments</h2>
+    <h2>댓글 ({{ comments.count }})</h2>
     {% for comment in comments %}
     작성자 : {{comment.writer}}
     <br>
@@ -62,8 +59,8 @@
     <form action="{% url 'new_comment' post.id %}" method="POST">
         {% csrf_token %}
         <input name="writer" type="hidden" value="{{user}}">
-        내용 : <textarea name="content" id="" cols="20" rows="10"></textarea>
-        <input type="submit">
+        <textarea name="content" class="content_area"></textarea>
+        <input type="submit" class="btn btn-primary">
     </form>
 </div>
 

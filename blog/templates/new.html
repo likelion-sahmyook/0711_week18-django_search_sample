@@ -1,21 +1,26 @@
 {% extends 'base.html' %} 
 
 {% block content %}
+<div class="container">
+    <h1>새 글 작성</h1>
+    <hr>
+    <form action="{%url 'create' %}" method="POST" class="new-form">
+        {% csrf_token %}
+        <p>제목</p>
+        <input type="text" name='title'>
+        <br>
+        <br>
+        <input type="hidden" name='writer' value="{{user}}">
+        <br>
+        <br>
+        <p>본문</p>
+        <textarea name="body" id="" placeholder="write your content"></textarea>
+        <br>
+        <br>
+        <button type='submit'>작성하기</button>
+    </form>
+</div>
 
-<h1>새 글을 작성해주세요</h1>
 
-<form action="{%url 'create' %}" method="POST">
-    {% csrf_token %}
-    제목 : <input type="text" name='title'>
-    <br>
-    <br>
-    <input type="hidden" name='writer' value="{{user}}">
-    <br>
-    <br>
-    본문 : <textarea name="body" id="" cols="20" rows="10" placeholder="write your content"></textarea>
-    <br>
-    <br>
-    <button type='submit'>작성하기</button>
-</form>
 
 {% endblock %}
