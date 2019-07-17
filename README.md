@@ -5,7 +5,7 @@
 1. 검색기능 구현(search)
 
 - home.html
-<pre><code>
+```python
     <form class="form-inline" action="{% url 'search' %}" method="get">
         <div class="input-group">
             <select name="search_filter" class="form-control" style="margin-right: 10px;">
@@ -16,19 +16,19 @@
             <button class="btn btn-secondary" type="submit">검색</button>
         </div>
     </form>
-</code></pre>
+```
 
 - urls.py
-<pre><code>
+```python
 urlpatterns = [
 
     path('search', views.search, name="search"),
 
 ]
-</code></pre>
+```
 
 - views.py
-<pre><code>
+```python
 def search(request):
     if request.GET.get('q'):
             que = request.GET.get('q')
@@ -40,15 +40,13 @@ def search(request):
         return redirect('home')
     
     return render(request, 'result.html', {'posts': posts, 'que': que})
-
-
-</code></pre>
+```
 
 
 2. 검색결과 페이지(result)
 
 - result.html
-<pre><code>
+```python
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
@@ -78,19 +76,19 @@ def search(request):
     
 </div>
 {% endblock %}
-</code></pre>
+```
 
 - urls.py
-<pre><code>
+```python
 urlpatterns = [
     path('search', views.search, name="search"),
     path('result', views.result, name="result"),
 ]
-</code></pre>
+```
 
 - views.py
-<pre><code>
+```python
 def result(request):
     return render(request, 'result.html')
-</code></pre>
+```
 
