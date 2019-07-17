@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 # Create your views here.
 
 def home(request):
-    post_list = Post.objects.all()
+    post_list = Post.objects.all().order_by('-pub_date')
     if request.user.is_authenticated:
         my_liked_post = Post.objects.filter(user = request.user)
     else:
@@ -27,6 +27,7 @@ def new(request):
 def create(request):
     new_post = Post()
     new_post.title=request.POST['title']
+    new_post.body=request.POST['body']
     new_post.writer = request.POST['writer']
     new_post.pub_date = timezone.datetime.now()
     new_post.save()
