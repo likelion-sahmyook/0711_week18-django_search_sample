@@ -1,0 +1,3 @@
+{{ object.title }}
+{{ object.writer }}
+{{ object.pub_date }}

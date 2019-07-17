@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 # Create your views here.
 
 def home(request):
-    post_list = Post.objects.all()
+    post_list = Post.objects.all().order_by('-pub_date')
     if request.user.is_authenticated:
         my_liked_post = Post.objects.filter(user = request.user)
     else:
