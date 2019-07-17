@@ -1,4 +1,4 @@
-# 멋쟁이 사자처럼 7기 세션 18주차 django
+# 멋쟁이 사자처럼 7기 세션 18주차 django 검색 구현
 1. git clone 해주세요 !
 2. 가상환경 생성
 3. pip install -r requirements.txt 
