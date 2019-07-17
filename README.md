@@ -4,3 +4,6 @@
 3. pip install -r requirements.txt 
 4. python manage.py makemigrations 
 5. python manage.py migrate
+
+- 작성 코드
+https://github.com/baeseongh/week18-django_session_practice/tree/search
