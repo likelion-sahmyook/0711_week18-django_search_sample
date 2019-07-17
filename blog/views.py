@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 # Create your views here.
 
 def home(request):
-    post_list = Post.objects.all()
+    post_list = Post.objects.all().order_by('-pub_date')
     if request.user.is_authenticated:
         my_liked_post = Post.objects.filter(user = request.user)
     else:
@@ -27,6 +27,7 @@ def new(request):
 def create(request):
     new_post = Post()
     new_post.title=request.POST['title']
+    new_post.body=request.POST['body']
     new_post.writer = request.POST['writer']
     new_post.pub_date = timezone.datetime.now()
     new_post.save()
@@ -65,3 +66,17 @@ def like(request,post_id):
         post.user.add(request.user)
     post.save()
     return redirect('detail', post_id)
+
+def search(request):
+    if request.GET.get('q'):
+            que = request.GET.get('q')
+            variable_column = request.GET.get('search_filter')
+            search_type = 'contains'
+            filter = variable_column + '__' + search_type
+            posts = Post.objects.filter(**{ filter: request.GET.get('q') }).order_by('-pub_date')         
+    return render(request, 'result.html', {
+        'posts': posts, 'que': que
+    })
+
+def result(request):
+    return render(request, 'result.html')
