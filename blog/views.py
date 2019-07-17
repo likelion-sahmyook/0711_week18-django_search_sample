@@ -73,10 +73,11 @@ def search(request):
             variable_column = request.GET.get('search_filter')
             search_type = 'contains'
             filter = variable_column + '__' + search_type
-            posts = Post.objects.filter(**{ filter: request.GET.get('q') }).order_by('-pub_date')         
-    return render(request, 'result.html', {
-        'posts': posts, 'que': que
-    })
+            posts = Post.objects.filter(**{ filter: request.GET.get('q') }).order_by('-pub_date') 
+    else:
+        return redirect('home')
+    
+    return render(request, 'result.html', {'posts': posts, 'que': que})
 
 def result(request):
     return render(request, 'result.html')
